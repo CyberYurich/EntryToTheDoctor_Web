@@ -11,7 +11,8 @@ import java.util.Date;
  *
  * @author ALEX
  */
-public class Entry {
+public class Entry implements Comparable<Entry> {
+
     private int id;
     private Date date;
     private int placeInQueue;
@@ -22,7 +23,7 @@ public class Entry {
     private String email;
     private int shoeSize;
     private String productModel;
-    
+
     public Entry() {
     }
 
@@ -104,5 +105,14 @@ public class Entry {
 
     public void setProductModel(String productModel) {
         this.productModel = productModel;
+    }
+
+    @Override
+    public int compareTo(Entry o) {        
+        int result = this.date.compareTo(o.date);
+        if (result != 0) {
+            return result;
+        }       
+        return Integer.compare(this.placeInQueue, o.placeInQueue);
     }
 }

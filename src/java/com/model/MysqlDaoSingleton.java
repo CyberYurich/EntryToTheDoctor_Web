@@ -91,16 +91,15 @@ public class MysqlDaoSingleton {
         return null;
     }
     
-    public List<Entry> readAll() {
+    public List<Entry> readAll() throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME;
         try(Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(query);          
             ResultSet resultSet = statement.executeQuery();) {           
             return makeEntriesList(resultSet);        
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(MysqlDaoSingleton.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        return null;
     }
     
     public void update(Entry entry) {

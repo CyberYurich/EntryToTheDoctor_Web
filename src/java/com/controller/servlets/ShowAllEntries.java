@@ -5,9 +5,12 @@
  */
 package com.controller.servlets;
 
+import com.model.Entry;
 import com.model.MysqlDaoSingleton;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ALEX
  */
-@WebServlet(name = "ShowAllEntries", urlPatterns = {"/all-entries"})
+@WebServlet(name = "ShowAllEntries", urlPatterns = {"/show-all-entries"})
 public class ShowAllEntries extends HttpServlet {
 
     /**
@@ -33,8 +36,15 @@ public class ShowAllEntries extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        request.setAttribute("entries", MysqlDaoSingleton.getInstance().readAll());
-        request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
+        try {
+            List<Entry> list = MysqlDaoSingleton.getInstance().readAll();
+            Collections.sort(list);
+            request.setAttribute("entries", list);
+            request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
+        } catch (SQLException | ClassNotFoundException ex) {
+            request.setAttribute("message", "Ошибка доступа к базе данных");
+            request.getRequestDispatcher("index.html").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
