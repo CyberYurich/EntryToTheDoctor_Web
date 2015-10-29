@@ -34,7 +34,7 @@ public class ShowAllEntries extends HttpServlet {
             throws ServletException, IOException {
         
         request.setAttribute("entries", MysqlDaoSingleton.getInstance().readAll());
-        request.getRequestDispatcher("show-all-entries.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
