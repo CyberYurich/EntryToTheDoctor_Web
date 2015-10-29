@@ -41,6 +41,11 @@
                         <td><c:out value="${entry.email}"/></td>
                         <td><c:out value="${entry.shoeSize}"/></td>
                         <td><c:out value="${entry.productModel}"/></td>
+                        <td>
+                            <a href="delete-entry?id=${entry.id}">
+                                <img src="delete.png"/>
+                            </a>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
