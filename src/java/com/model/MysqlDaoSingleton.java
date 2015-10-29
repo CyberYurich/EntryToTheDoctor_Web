@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,30 +36,40 @@ public class MysqlDaoSingleton {
         return MysqlDaoSingletonHolder.INSTANCE;
     }
     
-    public void create(Entry entry) {
+    public void create(Date date, 
+                       int placeInQueue, 
+                       String lastname,
+                       String firstname,
+                       String middlename,
+                       String phone,
+                       String email,
+                       int shoeSize,
+                       String productModel) 
+            throws SQLException, ClassNotFoundException {
+        
         String query = "insert into " 
                        + PATIENTS_TABLE_NAME
                        + " (date,place_in_queue,lastname,firstname,middlename,phone,email,shoe_size,product_model)"
                        + " values (?,?,?,?,?,?,?,?,?)";
-        java.sql.Date sqlDate = new java.sql.Date(entry.getDate().getTime());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         try(Connection connection = getConnection();  
             PreparedStatement statement = connection.prepareStatement(query);) {           
             statement.setDate(1, sqlDate);
-            statement.setInt(2, entry.getPlaceInQueue());
-            statement.setString(3, entry.getLastname());
-            statement.setString(4, entry.getFirstname());
-            statement.setString(5, entry.getMiddlename());
-            statement.setLong(6, entry.getPhone());
-            statement.setString(7, entry.getEmail());
-            statement.setInt(8, entry.getShoeSize());
-            statement.setString(9, entry.getProductModel());
+            statement.setInt(2, placeInQueue);
+            statement.setString(3, lastname);
+            statement.setString(4, firstname);
+            statement.setString(5, middlename);
+            statement.setString(6, phone);
+            statement.setString(7, email);
+            statement.setInt(8, shoeSize);
+            statement.setString(9, productModel);
             statement.executeUpdate();
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(MysqlDaoSingleton.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
     }
     
-    public Entry readById(int id) {
+    public Entry readById(int id) throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME + " where id = ?";
         try(Connection connection = getConnection();  
             PreparedStatement statement = connection.prepareStatement(query);) {           
@@ -71,12 +79,11 @@ public class MysqlDaoSingleton {
                 return makeEntry(resultSet);
             }  
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(MysqlDaoSingleton.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        return null;
     }
     
-    public List<Entry> readByDate(Date date) {
+    public List<Entry> readByDate(Date date) throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME + " where date = ?";
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         try(Connection connection = getConnection();  
@@ -86,9 +93,8 @@ public class MysqlDaoSingleton {
                 return makeEntriesList(resultSet);
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(MysqlDaoSingleton.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        return null;
     }
     
     public List<Entry> readAll() throws SQLException, ClassNotFoundException {
@@ -106,14 +112,14 @@ public class MysqlDaoSingleton {
         //TODO
     }
     
-    public void delete(int id) {
+    public void delete(int id) throws SQLException, ClassNotFoundException {
         String query = "delete from " + PATIENTS_TABLE_NAME + " where id = ?";
         try(Connection connection = getConnection();  
             PreparedStatement statement = connection.prepareStatement(query);) {           
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(MysqlDaoSingleton.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex ;
         }
     }
 

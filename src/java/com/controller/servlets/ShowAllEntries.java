@@ -43,7 +43,7 @@ public class ShowAllEntries extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException ex) {
             request.setAttribute("message", "Ошибка доступа к базе данных");
-            request.getRequestDispatcher("index.html").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 

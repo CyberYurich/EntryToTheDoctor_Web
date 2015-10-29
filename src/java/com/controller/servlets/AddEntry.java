@@ -8,6 +8,9 @@ package com.controller.servlets;
 import com.model.MysqlDaoSingleton;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ALEX
  */
-@WebServlet(name = "DeleteEntry", urlPatterns = {"/delete-entry"})
-public class DeleteEntry extends HttpServlet {
+@WebServlet(name = "AddEntry", urlPatterns = {"/add-entry"})
+public class AddEntry extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,16 +36,36 @@ public class DeleteEntry extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            MysqlDaoSingleton.getInstance().delete(id);
-            response.sendRedirect("show-all-entries");
+            request.setCharacterEncoding("UTF-8");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date =  dateFormat.parse(request.getParameter("date"));
+            int placeInQueue = Integer.parseInt(request.getParameter("time"));
+            String lastname = request.getParameter("lastName");
+            String firstname = request.getParameter("firstName");
+            String middlename = request.getParameter("middleName");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            int shoeSize = Integer.parseInt(request.getParameter("shoeSize"));
+            String productModel = request.getParameter("productModel");
+
+            MysqlDaoSingleton.getInstance().create(date, 
+                                                   placeInQueue, 
+                                                   lastname, 
+                                                   firstname, 
+                                                   middlename, 
+                                                   phone, 
+                                                   email, 
+                                                   shoeSize, 
+                                                   productModel);
             
-        } catch (NumberFormatException ex){
-            request.setAttribute("message", "Неверный параметр id");
-            request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
+            request.setAttribute("message", "Вы записаны к врачу");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (ParseException | NumberFormatException ex) {
+            request.setAttribute("message", "Введены некорректные данные. Заполните все поля, отмеченные *");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException ex) {
             request.setAttribute("message", "Ошибка доступа к базе данных");
-            request.getRequestDispatcher("WEB-INF/show-all-entries.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 
