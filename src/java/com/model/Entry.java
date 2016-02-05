@@ -5,6 +5,7 @@
  */
 package com.model;
 
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -15,13 +16,13 @@ public class Entry implements Comparable<Entry> {
 
     private int id;
     private Date date;
-    private int placeInQueue;
+    private Time time;
     private String lastname;
     private String firstname;
     private String middlename;
-    private long phone;
+    private String phone;
     private String email;
-    private int shoeSize;
+    private String shoeSize;
     private String productModel;
 
     public Entry() {
@@ -43,12 +44,12 @@ public class Entry implements Comparable<Entry> {
         this.date = date;
     }
 
-    public int getPlaceInQueue() {
-        return placeInQueue;
+    public Time getTime() {
+        return time;
     }
 
-    public void setPlaceInQueue(int placeInQueue) {
-        this.placeInQueue = placeInQueue;
+    public void setTime(Time time) {
+        this.time = time;
     }
 
     public String getLastname() {
@@ -75,11 +76,11 @@ public class Entry implements Comparable<Entry> {
         this.middlename = middlename;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -91,11 +92,11 @@ public class Entry implements Comparable<Entry> {
         this.email = email;
     }
 
-    public int getShoeSize() {
+    public String getShoeSize() {
         return shoeSize;
     }
 
-    public void setShoeSize(int shoeSize) {
+    public void setShoeSize(String shoeSize) {
         this.shoeSize = shoeSize;
     }
 
@@ -113,6 +114,6 @@ public class Entry implements Comparable<Entry> {
         if (result != 0) {
             return result;
         }       
-        return Integer.compare(this.placeInQueue, o.placeInQueue);
+        return this.time.compareTo(o.time);
     }
 }

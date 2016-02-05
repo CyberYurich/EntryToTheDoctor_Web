@@ -19,7 +19,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Дата</th>
-                        <th>Место в очереди</th>
+                        <th>Время</th>
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Отчество</th>
@@ -34,7 +34,7 @@
                         <tr>
                             <td><c:out value="${entry.id}"/></td>
                             <td><c:out value="${entry.date}"/></td>
-                            <td><c:out value="${entry.placeInQueue}"/></td>
+                            <td><c:out value="${entry.time}"/></td>
                             <td><c:out value="${entry.lastname}"/></td>
                             <td><c:out value="${entry.firstname}"/></td>
                             <td><c:out value="${entry.middlename}"/></td>

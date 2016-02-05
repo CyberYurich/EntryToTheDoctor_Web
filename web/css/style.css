@@ -1,0 +1,62 @@
+/* 
+    Created on : 28.01.2016, 15:34:18
+    Author     : AlexeiArtemov
+*/
+
+label.error {
+    color: #eb9316;
+    padding-left: 10px;
+    font-weight: 100;
+}
+.forma {
+    width: 60%;
+    margin-left: 20px;
+}
+.button {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-top: 10px;
+    padding: 13px 26px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    background-color: rgb(250, 105, 0);
+    color: #F2F2F2;
+    vertical-align: middle;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+.button:hover, .button:active, .button:focus {
+    background-color: #DE5E60;
+    color: #FFFFFF;
+}
+body {
+    background: #26292E;
+    color: #7F8289;
+    font-weight: 300;
+    font-size: 16px;
+    font-family: 'Titillium Web', sans-serif;
+    line-height: 28px;
+}
+input, select{
+    background-color: #2F3238;
+    color: #fff;
+    border: 0;
+}
+
+.table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td {
+    padding: 5px;
+    color: #222;
+}
+
+select option {
+  text-align: center;
+}
