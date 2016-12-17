@@ -21,42 +21,44 @@ import java.util.Properties;
  * @author ALEX
  */
 public class MysqlDaoSingleton {
+
     private final String PATIENTS_TABLE_NAME = "patients_entries";
-    
+
     private final String URL = "jdbc:mysql://localhost:3306/entry_to_the_doctor";
     private final String USERNAME = "root";
     private final String PASSWORD = "root";
-    
+
     private MysqlDaoSingleton() {
     }
-    
-    private static class MysqlDaoSingletonHolder { 
+
+    private static class MysqlDaoSingletonHolder {
+
         private static final MysqlDaoSingleton INSTANCE = new MysqlDaoSingleton();
     }
 
     public static MysqlDaoSingleton getInstance() {
         return MysqlDaoSingletonHolder.INSTANCE;
     }
-    
-    public void create(Date date, 
-                       Time time, 
-                       String lastname,
-                       String firstname,
-                       String middlename,
-                       String phone,
-                       String email,
-                       String shoeSize,
-                       String productModel) 
+
+    public void create(Date date,
+            Time time,
+            String lastname,
+            String firstname,
+            String middlename,
+            String phone,
+            String email,
+            String shoeSize,
+            String productModel)
             throws SQLException, ClassNotFoundException {
-        
-        String query = "insert into " 
-                       + PATIENTS_TABLE_NAME
-                       + " (date,time,lastname,firstname,middlename,phone,email,shoe_size,product_model)"
-                       + " values (?,?,?,?,?,?,?,?,?)";
+
+        String query = "insert into "
+                + PATIENTS_TABLE_NAME
+                + " (date,time,lastname,firstname,middlename,phone,email,shoe_size,product_model)"
+                + " values (?,?,?,?,?,?,?,?,?)";
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         java.sql.Time sqlTime = new java.sql.Time(time.getTime());
-        try(Connection connection = getConnection();  
-            PreparedStatement statement = connection.prepareStatement(query);) {           
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);) {
             statement.setDate(1, sqlDate);
             statement.setTime(2, sqlTime);
             statement.setString(3, lastname);
@@ -71,72 +73,72 @@ public class MysqlDaoSingleton {
             throw ex;
         }
     }
-    
+
     public Entry readById(int id) throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME + " where id = ?";
-        try(Connection connection = getConnection();  
-            PreparedStatement statement = connection.prepareStatement(query);) {           
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);) {
             statement.setInt(1, id);
-            try(ResultSet resultSet = statement.executeQuery();) {
+            try (ResultSet resultSet = statement.executeQuery();) {
                 resultSet.next();
                 return makeEntry(resultSet);
-            }  
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             throw ex;
         }
     }
-    
+
     public List<Entry> readByDate(Date date) throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME + " where date = ?";
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-        try(Connection connection = getConnection();  
-            PreparedStatement statement = connection.prepareStatement(query);) {
-            statement.setDate(1, sqlDate);            
-            try(ResultSet resultSet = statement.executeQuery();) {             
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);) {
+            statement.setDate(1, sqlDate);
+            try (ResultSet resultSet = statement.executeQuery();) {
                 return makeEntriesList(resultSet);
             }
         } catch (SQLException | ClassNotFoundException ex) {
             throw ex;
         }
     }
-    
+
     public List<Entry> readAll() throws SQLException, ClassNotFoundException {
         String query = "select * from " + PATIENTS_TABLE_NAME;
-        try(Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);          
-            ResultSet resultSet = statement.executeQuery();) {           
-            return makeEntriesList(resultSet);        
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery();) {
+            return makeEntriesList(resultSet);
         } catch (SQLException | ClassNotFoundException ex) {
             throw ex;
         }
     }
-    
+
     public List<String> readTimesByDate(Date date) throws SQLException, ClassNotFoundException {
         String query = "select time from " + PATIENTS_TABLE_NAME + " where date = ?";
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-        try(Connection connection = getConnection();  
-            PreparedStatement statement = connection.prepareStatement(query);) {
-            statement.setDate(1, sqlDate);            
-            try(ResultSet resultSet = statement.executeQuery();) {             
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);) {
+            statement.setDate(1, sqlDate);
+            try (ResultSet resultSet = statement.executeQuery();) {
                 return makeTimesList(resultSet);
             }
         } catch (SQLException | ClassNotFoundException ex) {
             throw ex;
         }
     }
-    
+
     public void update(Entry entry) {
         //TODO
     }
-    
+
     public void delete(int id) throws SQLException, ClassNotFoundException {
         String query = "delete from " + PATIENTS_TABLE_NAME + " where id = ?";
-        try(Connection connection = getConnection();  
-            PreparedStatement statement = connection.prepareStatement(query);) {           
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(query);) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException | ClassNotFoundException ex) {
-            throw ex ;
+            throw ex;
         }
     }
 
@@ -149,9 +151,9 @@ public class MysqlDaoSingleton {
         properties.setProperty("characterEncoding", "UTF-8");
         return DriverManager.getConnection(URL, properties);
     }
-    
+
     private Entry makeEntry(ResultSet resultSet) throws SQLException {
-        Entry entry = new Entry();   
+        Entry entry = new Entry();
         entry.setId(resultSet.getInt(1));
         entry.setDate(resultSet.getDate(2));
         entry.setTime(resultSet.getTime(3));
@@ -162,21 +164,21 @@ public class MysqlDaoSingleton {
         entry.setEmail(resultSet.getString(8));
         entry.setShoeSize(resultSet.getString(9));
         entry.setProductModel(resultSet.getString(10));
-        
+
         return entry;
     }
-    
+
     private List<Entry> makeEntriesList(ResultSet resultSet) throws SQLException {
         List<Entry> list = new ArrayList<>();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             list.add(makeEntry(resultSet));
         }
         return list;
     }
-    
+
     private List<String> makeTimesList(ResultSet resultSet) throws SQLException {
         List<String> list = new ArrayList<>();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             list.add(resultSet.getTime(1).toString());
         }
         return list;

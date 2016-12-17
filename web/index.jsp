@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : index
     Created on : 21.10.2015, 2:17:31
     Author     : ALEX
@@ -77,10 +77,10 @@
                             <td>&nbsp;</td>
                         </tr>
                     </tbody>
-                </table>               
+                </table>
             </form>
         </div>
-        <div>
+        <div style="color: #eb9316; padding-left: 10px">
             <c:out value="${message}"/>
         </div>
     </body>

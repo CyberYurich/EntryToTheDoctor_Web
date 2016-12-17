@@ -39,8 +39,8 @@ public class AddEntry extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date =  dateFormat.parse(request.getParameter("date"));            
-            Time time = Time.valueOf(request.getParameter("time"));                    
+            Date date = dateFormat.parse(request.getParameter("date"));
+            Time time = Time.valueOf(request.getParameter("time"));
             String lastname = request.getParameter("lastName");
             String firstname = request.getParameter("firstName");
             String middlename = request.getParameter("middleName");
@@ -49,18 +49,17 @@ public class AddEntry extends HttpServlet {
             String shoeSize = request.getParameter("shoeSize");
             String productModel = request.getParameter("productModel");
 
-            MysqlDaoSingleton.getInstance().create(date, 
-                                                   time, 
-                                                   lastname, 
-                                                   firstname, 
-                                                   middlename, 
-                                                   phone, 
-                                                   email, 
-                                                   shoeSize, 
-                                                   productModel);
-            
-            request.setAttribute("message", "Вы записаны к врачу");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            MysqlDaoSingleton.getInstance().create(date,
+                    time,
+                    lastname,
+                    firstname,
+                    middlename,
+                    phone,
+                    email,
+                    shoeSize,
+                    productModel);
+
+            response.sendRedirect("thanks.html");
         } catch (ParseException | IllegalArgumentException ex) {
             request.setAttribute("message", "Введены некорректные данные");
             request.getRequestDispatcher("index.jsp").forward(request, response);
